@@ -8,7 +8,7 @@ import (
 
 func main() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		io.WriteString(w, "Welcome to GDC Cloud Bangalore webinar on Buildpacks !!\n")
+		io.WriteString(w, "Welcome to GDC Cloud Bangalore webinar on Cloud Native Buildpacks !!\n")
 	})
 
 	log.Fatal(http.ListenAndServe(":8080", nil))
