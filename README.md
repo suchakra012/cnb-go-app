@@ -1,6 +1,6 @@
 **Build Image Using Cloud Native Buildpack**
 =====================
-This repository contains instruction how to build image without Dockerfile (a sample go app) using [Cloud Native Buildpack](https://buildpacks.io/).
+This repository has instruction to build image without Dockerfile (a sample go app) using [Cloud Native Buildpack](https://buildpacks.io/).
 
 Instruction
 -------------------------------------------
