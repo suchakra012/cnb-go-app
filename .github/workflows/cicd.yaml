@@ -57,13 +57,23 @@ jobs:
     - name: "Example show SonarQube Quality Gate Status value"
       run: echo "The Quality Gate status is ${{ steps.sonarqube-quality-gate-check.outputs.quality-gate-status }}"
 
+  test-pack:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Pack Help
+        uses: dfreilich/pack-action@v2
+        with:
+          args: help
+
   dockerhub_remote_build:
     runs-on: ubuntu-latest
     env:
       IMG_NAME: 'cnb-go-app'
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
       - name: Set App Name
         run: 'echo "IMG_NAME=$(echo ${USERNAME})/$(echo ${IMG_NAME})" >> $GITHUB_ENV'
       - name: login
@@ -72,7 +82,7 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Pack Remote Build
-        uses: ./
+        uses: dfreilich/pack-action@v2
         with:
           args: 'build ${{ env.IMG_NAME }}:${{github.run_id}} --buildpack paketo-buildpacks/go --builder paketobuildpacks/builder-jammy-base --publish'  
 
