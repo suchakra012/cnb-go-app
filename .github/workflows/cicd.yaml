@@ -63,7 +63,7 @@ jobs:
       IMG_NAME: 'cnb-go-app'
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v2
       - name: Set App Name
         run: 'echo "IMG_NAME=$(echo ${USERNAME})/$(echo ${IMG_NAME})" >> $GITHUB_ENV'
       - name: login
@@ -72,7 +72,7 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Pack Remote Build
-        uses: dfreilich/pack-action@v3
+        uses: dfreilich/pack-action@v2
         with:
           args: 'build ${{ env.IMG_NAME }}:${{github.run_id}} --buildpack paketo-buildpacks/go --builder paketobuildpacks/builder-jammy-base --publish'  
 
