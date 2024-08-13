@@ -64,6 +64,8 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+      - name: Install Pack CLI
+        uses: buildpacks/github-actions/setup-pack@v5.0.0  
       - name: Set App Name
         run: 'echo "IMG_NAME=$(echo ${USERNAME})/$(echo ${IMG_NAME})" >> $GITHUB_ENV'
       - name: login
@@ -71,10 +73,9 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Pack Remote Build
-        uses: buildpacks/github-actions/setup-tools@v5.0.0
-        with:
-          args: 'build ${{ env.IMG_NAME }}:${{github.run_id}} --buildpack paketo-buildpacks/go --builder paketobuildpacks/builder-jammy-base --publish'  
+      - name: Pack Remote Build & push to Registry
+        run: |
+          pack build ${{ env.IMG_NAME }}:${{github.run_id}} --buildpack paketo-buildpacks/go --builder paketobuildpacks/builder-jammy-base --path . --publish  
 
   
      
