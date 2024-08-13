@@ -75,7 +75,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Pack Remote Build & push to Registry
         run: |
-          pack build ${{ env.IMG_NAME }}:${{github.run_id}} --buildpack paketo-buildpacks/go --builder paketobuildpacks/builder-jammy-base --path . --publish  
+          pack build ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMG_NAME }}:${{github.run_id}} --buildpack paketo-buildpacks/go --builder paketobuildpacks/builder-jammy-base --path . --publish  
 
   
      
