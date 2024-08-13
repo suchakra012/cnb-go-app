@@ -8,7 +8,7 @@ image:
   repository: chakrabortsu181/cnb-go-app
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "10374693216"
+  tag: "10374773832"
 
 ingress:
   enabled: false
