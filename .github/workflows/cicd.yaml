@@ -12,7 +12,7 @@ on:
       - 'k8s/**'
       - 'README.md'
 jobs:
-  local-build:
+  local_build:
     runs-on: ubuntu-latest
 
     steps:
@@ -30,7 +30,27 @@ jobs:
     - name: Test
       run: go test ./...
 
-  code-quality:
+  code_scan:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    - name: Run Trivy vulnerability scanner in repo mode
+        uses: aquasecurity/trivy-action@0.20.0
+        with:
+          scan-type: 'fs'
+          ignore-unfixed: true
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+          severity: 'CRITICAL'
+
+    - name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: 'trivy-results.sarif'
+     
+  code_quality:
     runs-on: ubuntu-latest
 
     steps:
@@ -71,11 +91,25 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Pack Remote Build & push to Registry
         run: |
-          pack build ${{ secrets.DOCKERHUB_USERNAME }}/cnb-go-app:${{github.run_id}} --buildpack paketo-buildpacks/go --builder paketobuildpacks/builder-jammy-base --publish  
+          pack build ${{ secrets.DOCKERHUB_USERNAME }}/cnb-go-app:${{github.run_id}} --buildpack paketo-buildpacks/go --builder paketobuildpacks/builder-jammy-base --publish 
+
+  image_scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@0.20.0
+        with:
+          image-ref: 'docker.io/{{ secrets.DOCKERHUB_USERNAME }}/cnb-go-app:${{github.run_id}}'
+          format: 'table'
+          exit-code: '1'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'            
 
   
      
-
     
 
         
