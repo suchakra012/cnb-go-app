@@ -8,7 +8,7 @@ import (
 
 func main() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		io.WriteString(w, "Welcome to GDC Cloud Bangalore webinar on Cloud Native Buildpacks and Kpack !!\n")
+		io.WriteString(w, "This is a test application on Golang !!\n")
 	})
 
 	log.Fatal(http.ListenAndServe(":8080", nil))
